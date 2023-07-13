@@ -124,7 +124,6 @@ body{
             transform: translate(0, -50%);
             right: 9%;
             user-select: none;
-            background-color: rgba(0,0,0, 0.6);
         }
     }
 }
@@ -133,7 +132,7 @@ body{
     font-size: 65px;
     text-align: center;
     padding: 20px;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgb(255 255 255 / 20%);
     user-select: none;
 }
 .content{
@@ -148,7 +147,7 @@ body{
         display: flex;
         justify-content: space-between;
         margin-top: 50px;
-        gap: 20px;
+        gap: 50px;
         .about__info_left{
             width: 40%;
             overflow: hidden;
@@ -156,6 +155,7 @@ body{
                 width: 100%;
                 height: 100%;
                 transition: transform 300ms ease-in-out;
+                object-fit: cover;
                 &:hover{
                     transform: scale(1.2);
                 }
@@ -184,6 +184,7 @@ body{
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
+            padding-top: 50px;
             .works__product{
                 position: relative;
                 width: 24%;
@@ -195,9 +196,11 @@ body{
                     width: 100%;
                     height: auto;
                     transition: transform 300ms ease-in-out;
+                    object-fit: cover;
                 }
                 .works__product_description{
                     position: absolute;
+                    width: 100%;
                     left: 0;
                     bottom: -50px;
                     background-color: $dark_opacity;
@@ -255,6 +258,7 @@ body{
             padding: 30px;
             text-align: center;
             font-size: 40px;
+            line-height: 1.4;
             user-select: none;
         }
     }
@@ -265,9 +269,16 @@ body{
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            text-align: center;
+            align-items: center;
+            text-align: left;
             font-size: 20px;
             width: 30%;
+            .contacts__info_cont{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                height: 100%;
+            }
         }
         .contacts__map{
             position: relative;
