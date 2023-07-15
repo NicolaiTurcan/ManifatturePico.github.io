@@ -25,11 +25,14 @@ const isMobile = {
             isMobile.Windows());
     }
 };
+const googleMap = document.querySelector('.contacts__map_frame');
 
 if (isMobile.any()) {
     document.body.classList.add('_touch');
+    googleMap.classList.add('no_filter');
 } else {
     document.body.classList.add('_pc');
+    googleMap.classList.remove('no_filter');
 }
 
 // Burger menu
