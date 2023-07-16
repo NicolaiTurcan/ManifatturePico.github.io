@@ -96,24 +96,120 @@ italy.addEventListener("click", () =>{
     }
 });
 
-
-//Product Popup
+//Product Popup + carousel
 const products = document.querySelectorAll('.works__product');
 products.forEach((product) => {
     product.addEventListener("click", (e) => {
         const element = e.currentTarget;
 
         if (element.classList.contains('_active')){
-            element.classList.toggle('_active');
-            document.body.classList.toggle('_lock');
+            element.classList.remove('_active');
+            document.body.classList.remove('_lock');
             element.style.top = "unset";
             element.style.left = "unset";
+            destroyCarouselButtons(element);
         } else {
-            element.classList.toggle('_active');
-            document.body.classList.toggle('_lock');
+            element.classList.add('_active');
+            document.body.classList.add('_lock');
             element.style.left = 0;
             element.style.top = window.pageYOffset + "px";
+            createCarouselButtons(element);
         }
-        
     });
 });
+
+document.addEventListener('keydown', (event) => {
+    const activeProductImage = document.querySelector('.works__product._active');
+    if (activeProductImage){
+        if(event.keyCode == 37){
+            caroucelPrev(activeProductImage);
+        } else if (event.keyCode == 39){
+            caroucelNext(activeProductImage);
+        } else if (event.keyCode == 27){
+            activeProductImage.classList.remove('_active');
+            document.body.classList.remove('_lock');
+            activeProductImage.style.top = "unset";
+            activeProductImage.style.left = "unset";
+            destroyCarouselButtons(activeProductImage);
+        }
+    }
+});
+
+function createCarouselButtons (element) {
+    const prevButton = document.createElement('BUTTON');
+    const nextButton = document.createElement('BUTTON');
+
+    prevButton.classList.add('img__button', 'imb__buton_prev', 'icon-arrow-left');
+    nextButton.classList.add('img__button', 'imb__buton_next', 'icon-arrow-right');
+    prevButton.setAttribute('type', 'button');
+    nextButton.setAttribute('type', 'button');
+    element.append(prevButton, nextButton);
+
+    prevButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        caroucelPrev(element);
+    });
+
+    nextButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        caroucelNext(element);
+    });
+}
+
+function caroucelNext (element){
+    let indexOfEl = getIndex(element);
+    if(indexOfEl != -1){
+        let nextEleent;
+        if(indexOfEl != (products.length - 1)){
+            nextEleent = products[indexOfEl + 1];
+        } else {
+            nextEleent = products[0];
+        }
+        element.classList.remove('_active');
+        element.style.top = "unset";
+        element.style.left = "unset";
+        destroyCarouselButtons(element);
+
+        nextEleent.classList.add('_active');
+        nextEleent.style.left = 0;
+        nextEleent.style.top = window.pageYOffset + "px";
+        createCarouselButtons(nextEleent);
+    }
+}
+
+function caroucelPrev (element){
+    let indexOfEl = getIndex(element);
+    if(indexOfEl != -1){
+        let prevElement;
+        if(indexOfEl != 0){
+            prevElement = products[indexOfEl - 1];
+        } else {
+            prevElement = products[products.length - 1];
+        }
+        element.classList.remove('_active');
+        element.style.top = "unset";
+        element.style.left = "unset";
+        destroyCarouselButtons(element);
+
+        prevElement.classList.add('_active');
+        prevElement.style.left = 0;
+        prevElement.style.top = window.pageYOffset + "px";
+        createCarouselButtons(prevElement);
+    }
+}
+
+function getIndex(el){
+    for (let i = 0; i < products.length; i++) {
+        if (products[i] == el) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+function destroyCarouselButtons (element) {
+    const buttons = element.querySelectorAll('.img__button');
+    buttons.forEach((button) => {
+        button.remove();
+    });
+}
