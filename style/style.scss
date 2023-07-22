@@ -25,6 +25,7 @@ h1, h2, h3, h4, h5, h6{
     width: 100%;
     z-index: 10;
     background-color: $dark_opacity;
+    overflow: hidden;
     .header__container{
         display: flex;
         align-items: center;
@@ -111,7 +112,7 @@ h1, h2, h3, h4, h5, h6{
     justify-content: center;
     background-image: url(../img/1.jpg);
     height: 500px;
-    width: 100vw;
+    overflow-x: hidden;
     .header__info-container{
         display: flex;
         justify-content: end;
@@ -140,14 +141,20 @@ h1, h2, h3, h4, h5, h6{
     padding: 20px;
     background-color: rgb(255 255 255 / 20%);
     user-select: none;
+    // overflow: hidden;
     .content__header_text{
         max-width: 1600px;
         padding: 0 2%;
     }
 }
+// .content__header_top{
+//     width: 100vw;
+//     overflow: hidden;
+// }
 .content{
     display: flex;
     justify-content: center;
+    overflow: hidden;
     .content__wrapper{
         max-width: 1600px;
         width: 100%;
@@ -266,22 +273,24 @@ h1, h2, h3, h4, h5, h6{
 .contacts{
     display: flex;
     justify-content: center;
+    flex-direction: column;
     margin-top: 50px;
     background-color: $color_dark_grey;
+    overflow: hidden;
     .contacts__wrapper{
         max-width: 1600px;
         width: 100%;
-        min-height: 450px;
         padding: 0 2%;
-        .contacts__header{
-            margin: 0 0 50px;
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.2);
-            .contacts__header_text{
-                font-size: 45px;
-                line-height: 1.4;
-                user-select: none;
-            }
+        padding-bottom: 50px;
+    }
+    .contacts__header{
+        margin: 0 0 50px;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.2);
+        .contacts__header_text{
+            font-size: 45px;
+            line-height: 1.4;
+            user-select: none;
         }
     }
     .contacts__container{
@@ -357,6 +366,7 @@ h1, h2, h3, h4, h5, h6{
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
     .footer__container{
         max-width: 1600px;
         width: 100%;
@@ -400,13 +410,25 @@ body._touch{
         color: rgba(255,255,255, 1);
     }
 }
+[data-language]{
+    opacity: 1;
+    transition: opacity 450ms ease;
+}
 .imb__buton_prev{
     left: 0;
 }
 .imb__buton_next{
     right: 0;
 }
-
+.hide{
+    display: none;
+}
+.fade_out{
+    opacity: 0;
+}
+.fade_in{
+    opacity: 1;
+}
 @media (max-width: 1200px) {
     .content{
         .about__info{
@@ -596,13 +618,11 @@ body._touch{
     }
     .contacts{
         margin-top: 25px;
-        .contacts__wrapper{
-            .contacts__header{
-                padding: 15px;
-                margin: 0px 0 25px;
-                .contacts__header_text{
-                    font-size: 33px;
-                }
+        .contacts__header{
+            padding: 15px;
+            margin: 0px 0 25px;
+            .contacts__header_text{
+                font-size: 33px;
             }
         }
         .contacts__container{
@@ -682,11 +702,9 @@ body._touch{
         }
     }
     .contacts{
-        .contacts__wrapper{
-            .contacts__header{
-                .contacts__header_text{
-                    font-size: 30px;
-                }
+        .contacts__header{
+            .contacts__header_text{
+                font-size: 30px;
             }
         }
     }
@@ -700,45 +718,30 @@ body._touch{
     }
 }
 
+.animate{
+    transition: opacity 1s ease, transform 1s ease;
+}
+.animate_to_left{
+    transform: translateX(20%);
+    opacity: 0;
+}
+.animate_to_right{
+    transform: translateX(-20%);
+    opacity: 0;
+}
+.animate_top{
+    transform: translateY(20%);
+    opacity: 0;
+}
 .js_slideUp{
-    animation: slideUp 1.5s ease;
-    transition: opacity 10s;
+    transform: translateY(0);
+    opacity: 1;
 }
 .js_slideToLeft{
-    animation: slideToLeft 1.5s ease;
-    transition: opacity 10s;
+    transform: translateX(0);
+    opacity: 1;
 }
 .js_slideToRight{
-    animation: slideToRight 1.5s ease;
-    transition: opacity 10s;
-}
-@keyframes slideUp{
-    0%{
-        transform: translateY(20%);
-        opacity: 0;
-    }
-    100%{
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-@keyframes slideToLeft{
-    0%{
-        transform: translateX(20%);
-        opacity: 0;
-    }
-    100%{
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-@keyframes slideToRight{
-    0%{
-        transform: translateX(-20%);
-        opacity: 0;
-    }
-    100%{
-        transform: translateX(0);
-        opacity: 1;
-    }
+    transform: translateX(0);
+    opacity: 1;
 }

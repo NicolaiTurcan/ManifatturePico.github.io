@@ -77,22 +77,72 @@ if (menuLinks.length > 0) {
 //Language buttons
 const english = document.querySelector('#english');
 const italy = document.querySelector('#italy');
+const enText = document.querySelectorAll('[data-language="en"]');
+const itText = document.querySelectorAll('[data-language="it"]');
+const subtitelCont = document.querySelector('#content__header_smooth');
+const subtitelContPadding = window.getComputedStyle(subtitelCont, null).getPropertyValue('padding').replace(/[a-z]+/g, '');
+
+itText.forEach((el) => {
+    el.classList.add('hide', 'fade_out'); 
+});
 
 english.addEventListener("click", () =>{
-    if(english.classList.contains('_active')){
-        return;
-    } else {
+    if(!english.classList.contains('_active')){
         english.classList.toggle('_active');
         italy.classList.toggle('_active');
+
+        itText.forEach((el) => {
+            el.classList.add('fade_out');
+            setTimeout(() =>{
+                el.classList.add('hide');
+            }, 400);
+        });
+
+        enText.forEach((el) => {
+            setTimeout(() =>{
+                el.classList.add('fade_out');
+                el.classList.remove('hide');
+                setTimeout( () =>{
+                    el.classList.remove('fade_out');
+                }, 500);
+            }, 450);
+        });
+
     }
 });
 
 italy.addEventListener("click", () =>{
-    if(italy.classList.contains('_active')){
-        return;
-    } else {
+    if(!italy.classList.contains('_active')){
         italy.classList.toggle('_active');
         english.classList.toggle('_active');
+
+        // subtitelCont.style.height = (subtitelCont.children[0].offsetHeight + (subtitelContPadding * 2)) + 'px';
+        // console.log(subtitelCont.children[0].offsetHeight)
+        // console.log(subtitelCont.style.height)
+
+
+        // setTimeout(() =>{
+        //     subtitelCont.style.height = (subtitelCont.children[1].offsetHeight + (subtitelContPadding * 2)) + 'px';
+        //     console.log(subtitelCont.children[0].offsetHeight)
+        //     console.log(subtitelCont.children[1].offsetHeight)
+        // }, 800);
+
+        enText.forEach((el) => {
+            el.classList.add('fade_out');
+            setTimeout(() =>{
+                el.classList.add('hide');
+            }, 400);
+        });
+
+        itText.forEach((el) => {
+            setTimeout(() =>{
+                el.classList.add('fade_out');
+                el.classList.remove('hide');
+                setTimeout(() =>{
+                    el.classList.remove('fade_out');
+                }, 500);
+            }, 450);
+        });
     }
 });
 
@@ -213,3 +263,51 @@ function destroyCarouselButtons (element) {
         button.remove();
     });
 }
+
+////////////////////////////////////////////////////////////////////////
+function animateProducts() {
+    products.forEach((product) => {
+        product.classList.add('animate');
+        let random = Math.floor(Math.random() * (3 - 1 + 1) + 1);
+        if (random == 1){
+            product.classList.add('animate_to_left');
+        } else if (random == 2) {
+            product.classList.add('animate_to_right');
+        } else if (random == 3){
+            product.classList.add('animate_top');
+        }
+    });
+
+    const animatedBoxes = document.querySelectorAll('.animate');
+    console.log(animatedBoxes.length)
+    function animateBoxes() {
+        const triggerBottom = (window.innerHeight / 5) * 4.5;
+    
+        animatedBoxes.forEach((box) => {
+            const boxTop = box.getBoundingClientRect().top;
+            if(boxTop < triggerBottom) {
+                if (box.classList.contains('animate_to_left')){
+                    box.classList.add('js_slideToLeft');
+                } else if (box.classList.contains('animate_to_right')){
+                    box.classList.add('js_slideToRight');
+                } else if (box.classList.contains('animate_top')){
+                    box.classList.add('js_slideUp');
+                }
+            }
+        });
+    }
+    window.addEventListener('scroll', throttle(animateBoxes, 300));
+    animateBoxes();
+}
+
+function throttle(fn, wait) {
+    var time = Date.now();
+    return function() {
+        if ((time + wait - Date.now()) < 0) {
+            fn();
+            time = Date.now();
+        }
+    }
+}
+
+animateProducts();
