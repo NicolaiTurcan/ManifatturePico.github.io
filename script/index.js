@@ -1,4 +1,5 @@
 "use strict";
+//================================================
 // Checking device touch or pc.mouce
 const isMobile = {
     Android: function () {
@@ -46,6 +47,7 @@ if (iconMenu) {
     });
 }
 
+//================================================================
 // one page navigation
 const menuLinks = document.querySelectorAll('.menu__link[data-goto]');
 
@@ -74,6 +76,7 @@ if (menuLinks.length > 0) {
     }
 }
 
+//============================================================================
 //Language buttons
 const english = document.querySelector('#english');
 const italy = document.querySelector('#italy');
@@ -146,13 +149,15 @@ italy.addEventListener("click", () =>{
     }
 });
 
-//Product Popup + carousel
+//================================================================
+//Product Popup + Carousel
 const products = document.querySelectorAll('.works__product');
+animateProducts();
 products.forEach((product) => {
     product.addEventListener("click", (e) => {
         const element = e.currentTarget;
-
         if (element.classList.contains('_active')){
+            animateProducts();
             element.classList.remove('_active');
             document.body.classList.remove('_lock');
             element.style.top = "unset";
@@ -160,6 +165,7 @@ products.forEach((product) => {
             destroyCarouselButtons(element);
         } else {
             element.classList.add('_active');
+            removeAnimatedClasses();
             document.body.classList.add('_lock');
             element.style.left = 0;
             element.style.top = window.pageYOffset + "px";
@@ -209,21 +215,21 @@ function createCarouselButtons (element) {
 function caroucelNext (element){
     let indexOfEl = getIndex(element);
     if(indexOfEl != -1){
-        let nextEleent;
+        let nextElement;
         if(indexOfEl != (products.length - 1)){
-            nextEleent = products[indexOfEl + 1];
+            nextElement = products[indexOfEl + 1];
         } else {
-            nextEleent = products[0];
+            nextElement = products[0];
         }
         element.classList.remove('_active');
         element.style.top = "unset";
         element.style.left = "unset";
         destroyCarouselButtons(element);
 
-        nextEleent.classList.add('_active');
-        nextEleent.style.left = 0;
-        nextEleent.style.top = window.pageYOffset + "px";
-        createCarouselButtons(nextEleent);
+        nextElement.classList.add('_active');
+        nextElement.style.left = 0;
+        nextElement.style.top = window.pageYOffset + "px";
+        createCarouselButtons(nextElement);
     }
 }
 
@@ -248,6 +254,20 @@ function caroucelPrev (element){
     }
 }
 
+function removeAnimatedClasses(){
+    products.forEach((element) => {
+        if(element.classList.contains('animate_to_left')){
+            element.classList.remove('animate_to_left');
+        }
+        if(element.classList.contains('animate_to_right')){
+            element.classList.remove('animate_to_right');
+        }
+        if(element.classList.contains('animate_top')){
+            element.classList.remove('animate_top');
+        }
+    });
+}
+
 function getIndex(el){
     for (let i = 0; i < products.length; i++) {
         if (products[i] == el) {
@@ -264,7 +284,9 @@ function destroyCarouselButtons (element) {
     });
 }
 
-////////////////////////////////////////////////////////////////////////
+//================================================================================================
+//Animation
+
 function animateProducts() {
     products.forEach((product) => {
         product.classList.add('animate');
@@ -277,37 +299,76 @@ function animateProducts() {
             product.classList.add('animate_top');
         }
     });
+}
 
-    const animatedBoxes = document.querySelectorAll('.animate');
-    console.log(animatedBoxes.length)
-    function animateBoxes() {
-        const triggerBottom = (window.innerHeight / 5) * 4.5;
-    
-        animatedBoxes.forEach((box) => {
-            const boxTop = box.getBoundingClientRect().top;
-            if(boxTop < triggerBottom) {
-                if (box.classList.contains('animate_to_left')){
-                    box.classList.add('js_slideToLeft');
-                } else if (box.classList.contains('animate_to_right')){
-                    box.classList.add('js_slideToRight');
-                } else if (box.classList.contains('animate_top')){
-                    box.classList.add('js_slideUp');
-                }
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        let entryTarget = entry.target;
+
+        if (entry.isIntersecting){
+            if (entryTarget.classList.contains('animate_to_left')){
+                entryTarget.classList.add('js_slideToLeft');
+            } else if (entryTarget.classList.contains('animate_to_right')){
+                entryTarget.classList.add('js_slideToRight');
+            } else if (entryTarget.classList.contains('animate_top')){
+                entryTarget.classList.add('js_slideUp');
             }
-        });
-    }
-    window.addEventListener('scroll', throttle(animateBoxes, 300));
-    animateBoxes();
+
+        } 
+    });
+});
+
+const animatedBoxes = document.querySelectorAll('.animate');
+animatedBoxes.forEach((el) => observer.observe(el));
+
+//============================================================================
+// TouchListener
+document.addEventListener('touchstart', handleTouchStart, false);
+document.addEventListener('touchmove', handleTouchMove, false);
+
+let xDown = null;
+let yDown = null;
+
+function getTouches(evt){
+  return evt.touches || evt.originalEvent.touches;
 }
 
-function throttle(fn, wait) {
-    var time = Date.now();
-    return function() {
-        if ((time + wait - Date.now()) < 0) {
-            fn();
-            time = Date.now();
+function handleTouchStart(evt){
+    const firstTouch = getTouches(evt)[0];
+    xDown = firstTouch.clientX;
+    yDown = firstTouch.clientY;
+};
+
+function handleTouchMove(evt){
+    const activeProductImage = document.querySelector('.works__product._active');
+    if(activeProductImage){
+        if (!xDown || !yDown){
+            return;
         }
+    
+        let xUp = evt.touches[0].clientX;
+        let yUp = evt.touches[0].clientY;
+    
+        let xDiff = xDown - xUp;
+        let yDiff = yDown - yUp;
+    
+        if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
+            if ( xDiff > 0 ) {
+                /* right swipe */ 
+                caroucelNext(activeProductImage);
+            } else {
+                caroucelPrev(activeProductImage);
+                /* left swipe */
+            }
+        } else {
+            if ( yDiff > 0 ) {
+                /* down swipe */ 
+            } else { 
+                /* up swipe */
+            }
+        }
+        /* reset values */
+        xDown = null;
+        yDown = null;
     }
-}
-
-animateProducts();
+};

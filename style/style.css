@@ -269,6 +269,7 @@ h1, h2, h3, h4, h5, h6 {
 .contacts {
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-direction: column;
   margin-top: 50px;
   background-color: #111111;
@@ -281,8 +282,9 @@ h1, h2, h3, h4, h5, h6 {
   padding-bottom: 50px;
 }
 .contacts .contacts__header {
-  margin: 0 0 50px;
   text-align: center;
+  width: 100%;
+  margin: 0 0 50px;
   background-color: rgba(255, 255, 255, 0.2);
 }
 .contacts .contacts__header .contacts__header_text {
@@ -350,9 +352,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 .content__nav .icon-instagram:hover {
   color: #e0317c;
-}
-.content__nav .icon-mail:hover {
-  color: #f6c425;
 }
 
 .no-background {
@@ -695,5 +694,11 @@ body._touch .content .works .works__product .works__product_description {
 
 .js_slideToRight {
   transform: translateX(0);
+  opacity: 1;
+}
+
+.js_remove_animation {
+  transform: translateX(0);
+  transform: translateY(0);
   opacity: 1;
 }/*# sourceMappingURL=style.css.map */
