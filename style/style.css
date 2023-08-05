@@ -518,6 +518,12 @@ body._touch .content .works .works__product .works__product_description {
     font-size: 35px;
     margin-bottom: 30px;
   }
+  .header .header__container .menu__body .menu__language .menu__language-el {
+    width: 55px;
+  }
+  .header .header__container .menu__body .menu__language span {
+    font-size: 35px;
+  }
   .header .header__container .menu__body._active {
     left: 0;
   }

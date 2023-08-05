@@ -141,16 +141,11 @@ h1, h2, h3, h4, h5, h6{
     padding: 20px;
     background-color: rgb(255 255 255 / 20%);
     user-select: none;
-    // overflow: hidden;
     .content__header_text{
         max-width: 1600px;
         padding: 0 2%;
     }
 }
-// .content__header_top{
-//     width: 100vw;
-//     overflow: hidden;
-// }
 .content{
     display: flex;
     justify-content: center;
@@ -532,7 +527,14 @@ body._touch{
                         font-size: 35px;
                         margin-bottom: 30px;
                     }
-
+                }
+                .menu__language{
+                    .menu__language-el{
+                        width: 55px;
+                    }
+                    span{
+                        font-size: 35px;
+                    }
                 }
             }
             .menu__body._active{
