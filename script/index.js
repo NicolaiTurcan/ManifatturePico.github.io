@@ -119,17 +119,6 @@ italy.addEventListener("click", () =>{
         italy.classList.toggle('_active');
         english.classList.toggle('_active');
 
-        // subtitelCont.style.height = (subtitelCont.children[0].offsetHeight + (subtitelContPadding * 2)) + 'px';
-        // console.log(subtitelCont.children[0].offsetHeight)
-        // console.log(subtitelCont.style.height)
-
-
-        // setTimeout(() =>{
-        //     subtitelCont.style.height = (subtitelCont.children[1].offsetHeight + (subtitelContPadding * 2)) + 'px';
-        //     console.log(subtitelCont.children[0].offsetHeight)
-        //     console.log(subtitelCont.children[1].offsetHeight)
-        // }, 800);
-
         enText.forEach((el) => {
             el.classList.add('fade_out');
             setTimeout(() =>{
@@ -152,44 +141,49 @@ italy.addEventListener("click", () =>{
 //================================================================
 //Product Popup + Carousel
 const products = document.querySelectorAll('.works__product');
+const adminRegex = /admin/;
+const adminPanel = window.location.href;
+
 animateProducts();
-products.forEach((product) => {
-    product.addEventListener("click", (e) => {
-        const element = e.currentTarget;
-        if (element.classList.contains('_active')){
-            animateProducts();
-            element.classList.remove('_active');
-            document.body.classList.remove('_lock');
-            element.style.top = "unset";
-            element.style.left = "unset";
-            destroyCarouselButtons(element);
-        } else {
-            element.classList.add('_active');
-            removeAnimatedClasses();
-            document.body.classList.add('_lock');
-            element.style.left = 0;
-            element.style.top = window.pageYOffset + "px";
-            createCarouselButtons(element);
+if(!adminPanel.match(adminRegex)){
+    products.forEach((product) => {
+        product.addEventListener("click", (e) => {
+            const element = e.currentTarget;
+            if (element.classList.contains('_active')){
+                animateProducts();
+                element.classList.remove('_active');
+                document.body.classList.remove('_lock');
+                element.style.top = "unset";
+                element.style.left = "unset";
+                destroyCarouselButtons(element);
+            } else {
+                element.classList.add('_active');
+                removeAnimatedClasses();
+                document.body.classList.add('_lock');
+                element.style.left = 0;
+                element.style.top = window.pageYOffset + "px";
+                createCarouselButtons(element);
+            }
+        });
+    });
+
+    document.addEventListener('keydown', (event) => {
+        const activeProductImage = document.querySelector('.works__product._active');
+        if (activeProductImage){
+            if(event.keyCode == 37){
+                caroucelPrev(activeProductImage);
+            } else if (event.keyCode == 39){
+                caroucelNext(activeProductImage);
+            } else if (event.keyCode == 27){
+                activeProductImage.classList.remove('_active');
+                document.body.classList.remove('_lock');
+                activeProductImage.style.top = "unset";
+                activeProductImage.style.left = "unset";
+                destroyCarouselButtons(activeProductImage);
+            }
         }
     });
-});
-
-document.addEventListener('keydown', (event) => {
-    const activeProductImage = document.querySelector('.works__product._active');
-    if (activeProductImage){
-        if(event.keyCode == 37){
-            caroucelPrev(activeProductImage);
-        } else if (event.keyCode == 39){
-            caroucelNext(activeProductImage);
-        } else if (event.keyCode == 27){
-            activeProductImage.classList.remove('_active');
-            document.body.classList.remove('_lock');
-            activeProductImage.style.top = "unset";
-            activeProductImage.style.left = "unset";
-            destroyCarouselButtons(activeProductImage);
-        }
-    }
-});
+}
 
 function createCarouselButtons (element) {
     const prevButton = document.createElement('BUTTON');
